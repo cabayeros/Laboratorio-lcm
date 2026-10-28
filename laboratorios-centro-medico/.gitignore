@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+.env
+.env.*
+!.env.example
+cookies.txt
+hts-cache/
+*.log
+test-results/
+playwright-report/

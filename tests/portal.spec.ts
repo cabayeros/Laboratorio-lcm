@@ -9,7 +9,7 @@ test('navegación, recursos originales y formularios sin PHP',async ({page}) => 
   await expect(page.getByRole('img',{name:/Una tarjeta/})).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCSS('display','flex');
   await page.getByRole('button',{name:'Pausar',exact:true}).click();
-  await expect(page.locator('.indicators button')).toHaveCount(11);
+  await expect(page.locator('.desktop-indicators button')).toHaveCount(11);
   await page.getByRole('button',{name:'Diapositiva siguiente'}).click();
   await expect(page.getByRole('link',{name:'Visítanos en Facebook'})).toBeVisible();
   await page.screenshot({path:'test-results/preview-desktop.png',fullPage:true});
@@ -41,7 +41,26 @@ test('navegación, recursos originales y formularios sin PHP',async ({page}) => 
 test('menú móvil y rutas directas',async ({page,request}) => {
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');
-  await page.getByRole('button',{name:/Menú/}).click();
+  await expect(page.locator('.menu-toggle')).toHaveCount(0);
+  await expect(page.locator('#navigation')).toHaveCSS('display','flex');
+  await expect(page.locator('#navigation a')).toHaveCount(7);
+  await expect(page.locator('#navigation svg')).toHaveCount(7);
+  for (const width of [320,390,600,601,768,1024]) {
+    await page.setViewportSize({width,height:844});
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),`horizontal overflow at ${width}px`).toBe(true);
+  }
+  await page.setViewportSize({width:390,height:844});
+  await page.getByRole('button',{name:'Pausar',exact:true}).click();
+  await expect(page.locator('.mobile-slide')).toHaveCount(2);
+  await expect(page.locator('.mobile-indicators button')).toHaveCount(6);
+  await page.getByRole('button',{name:'Ver grupo desde diapositiva 11'}).click();
+  await expect(page.locator('.mobile-slide')).toHaveCount(1);
+  const orphan = await page.locator('.mobile-slide').boundingBox();
+  const slides = await page.locator('.mobile-slides').boundingBox();
+  if (!orphan || !slides) throw new Error('No se pudo medir la diapositiva impar en móvil.');
+  expect(Math.abs(orphan.x + orphan.width / 2 - (slides.x + slides.width / 2))).toBeLessThan(1);
+  await page.getByRole('button',{name:'Diapositiva siguiente'}).click();
+  await expect(page.locator('.mobile-slide')).toHaveCount(2);
   await page.getByRole('navigation').getByRole('link',{name:'Reglamento',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Reglamento',exact:true})).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

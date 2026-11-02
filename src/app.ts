@@ -7,49 +7,23 @@ import { RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/rou
   imports: [RouterLink],
   template: `
     <section class="carousel" aria-roledescription="carrusel" aria-label="Beneficios Cliente Consentido" (mouseenter)="paused.set(true)" (mouseleave)="paused.set(false)" (focusin)="paused.set(true)">
-      <img class="slide desktop-slide" [src]="'assets/img/Fondo_' + slides[current()] + '.jpg'" [alt]="descriptions[current()]">
-      <div class="mobile-slides" [class.orphan]="mobileStart() + 1 >= slides.length">
-        <div class="mobile-slide">
-          <img [src]="'assets/img/Fondo_' + slides[mobileStart()] + '.jpg'" [alt]="descriptions[mobileStart()]">
-          @if (mobileStart() === 0) { <a class="slide-action button" routerLink="/mi-cuenta">Iniciar Sesión</a> }
-          @if (mobileStart() === 1) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/" target="_blank" rel="noopener noreferrer">Visítanos en Facebook</a> }
-          @if (mobileStart() === 2) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/photos" target="_blank" rel="noopener noreferrer">Nuestros Productos</a> }
-        </div>
-        @if (mobileStart() + 1 < slides.length) {
-          <div class="mobile-slide">
-            <img [src]="'assets/img/Fondo_' + slides[mobileStart() + 1] + '.jpg'" [alt]="descriptions[mobileStart() + 1]">
-            @if (mobileStart() + 1 === 1) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/" target="_blank" rel="noopener noreferrer">Visítanos en Facebook</a> }
-            @if (mobileStart() + 1 === 2) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/photos" target="_blank" rel="noopener noreferrer">Nuestros Productos</a> }
-          </div>
-        }
-      </div>
+      <img class="slide" [src]="'assets/img/Fondo_' + slides[current()] + '.jpg'" [alt]="descriptions[current()]">
       @if (current() === 0) { <a class="slide-action button" routerLink="/mi-cuenta">Iniciar Sesión</a> }
       @if (current() === 1) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/" target="_blank" rel="noopener noreferrer">Visítanos en Facebook</a> }
       @if (current() === 2) { <a class="slide-action button" href="https://www.facebook.com/LaboratoriosCentroMedico/photos" target="_blank" rel="noopener noreferrer">Nuestros Productos</a> }
       <button class="arrow previous" aria-label="Diapositiva anterior" (click)="move(-1)">‹</button>
       <button class="arrow next" aria-label="Diapositiva siguiente" (click)="move(1)">›</button>
-      <div class="indicators desktop-indicators">@for (slide of slides; track $index) { <button [class.selected]="current() === $index" [attr.aria-label]="'Ver diapositiva ' + ($index + 1)" [attr.aria-current]="current() === $index ? 'true' : null" (click)="current.set($index)"></button> }</div>
-      <div class="indicators mobile-indicators">@for (start of mobileStarts; track start) { <button [class.selected]="isMobileStart(start)" [attr.aria-label]="'Ver grupo desde diapositiva ' + (start + 1)" [attr.aria-current]="isMobileStart(start) ? 'true' : null" (click)="current.set(start)"></button> }</div>
+      <div class="indicators">@for (slide of slides; track $index) { <button [class.selected]="current() === $index" [attr.aria-label]="'Ver diapositiva ' + ($index + 1)" [attr.aria-current]="current() === $index ? 'true' : null" (click)="current.set($index)"></button> }</div>
       <button class="pause" (click)="paused.set(!paused())">{{ paused() ? 'Reproducir' : 'Pausar' }}</button>
     </section>`
 })
 export class HomeComponent implements OnDestroy {
   readonly slides = [1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 11];
-  readonly mobileStarts = this.slides.map((_, index) => index).filter(index => index % 2 === 0);
   readonly descriptions = ['Una tarjeta, muchos beneficios. Laboratorio y más. Solicita tu tarjeta al 9890-8884.', 'Laboratorios Centro Médico: visítanos en Facebook', 'Nuestros productos y servicios', 'Beneficios Cliente Consentido', 'Servicios de Laboratorios Centro Médico', 'Promociones Cliente Consentido', 'Salud y bienestar', 'Beneficios de tu tarjeta', 'Beneficios de tu tarjeta', 'Servicios y promociones LCM', 'Laboratorios Centro Médico'];
   readonly current = signal(0);
   readonly paused = signal(typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
   private readonly timer = setInterval(() => { if (!this.paused()) this.move(1); }, 5000);
-  mobileStart() { return Math.floor(this.current() / 2) * 2; }
-  isMobileStart(start: number) { return this.mobileStart() === start; }
-  move(direction: number) {
-    if (typeof matchMedia !== 'undefined' && matchMedia('(max-width: 600px)').matches) {
-      const page = Math.floor(this.current() / 2);
-      this.current.set(((page + direction + this.mobileStarts.length) % this.mobileStarts.length) * 2);
-      return;
-    }
-    this.current.update(value => (value + direction + this.slides.length) % this.slides.length);
-  }
+  move(direction: number) { this.current.update(value => (value + direction + this.slides.length) % this.slides.length); }
   ngOnDestroy() { clearInterval(this.timer); }
 }
 
@@ -137,18 +111,25 @@ export const routes: Routes = [
 
 @Component({
   selector:'lcm-app', imports:[RouterOutlet,RouterLink,RouterLinkActive],
-  template:`<a class="skip" href="#contenido">Saltar al contenido</a><div class="site"><div class="topline"><span>.:: Tarjeta Cliente Consentido ::. | <a routerLink="/mi-cuenta">Iniciar sesión</a></span></div>
-  <header><a routerLink="/" aria-label="Laboratorios Centro Médico, inicio"><img class="logo" src="assets/img/logo.png" alt="Laboratorios Centro Médico"></a><nav id="navigation" aria-label="Navegación principal">@for (item of navigation; track item.path) {<a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" [attr.aria-label]="item.label" [title]="item.label"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path [attr.d]="item.icon"></path></svg><span>{{item.label}}</span></a>}</nav></header>
+  template:`<a class="skip" href="#contenido">Saltar al contenido</a><div class="site"><div class="topline"><span>.:: Tarjeta Cliente Consentido ::. | <a routerLink="/mi-cuenta">Iniciar sesión</a></span><button type="button" class="theme-toggle" (click)="toggleTheme()" [attr.aria-pressed]="darkMode()" aria-label="Modo oscuro">{{darkMode() ? '☀ Modo claro' : '☾ Modo oscuro'}}</button></div>
+  <header><a routerLink="/" aria-label="Laboratorios Centro Médico, inicio"><img class="logo" src="assets/img/logo.png" alt="Laboratorios Centro Médico"></a><nav id="navigation" aria-label="Navegación principal">@for (item of navigation; track item.path) {<a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" [attr.aria-label]="item.label"><span class="nav-icon" aria-hidden="true">@switch (item.icon) {@case ('home') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>}@case ('about') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>}@case ('rules') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 5.5v14A2.5 2.5 0 0 1 6.5 17H20M8 7h8m-8 4h8"/></svg>}@case ('partners') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1zm12-15a3 3 0 0 1 0 6m2 3a5 5 0 0 1 4 5v1h-3"/></svg>}@case ('catalog') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>}@case ('account') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>}@case ('contact') {<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>}}</span><span class="nav-label">{{item.label}}</span></a>}</nav></header>
   <main id="contenido" tabindex="-1"><router-outlet /></main><footer><p>© Laboratorios Centro Médico 2016</p><img src="assets/img/DATACODE.png" alt="DATACODE"></footer></div>`
 })
 export class AppComponent {
-  navigation = [
-    {path:'/',label:'Inicio',icon:'M3 10.5 12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6'},
-    {path:'/acerca-de',label:'Acerca de',icon:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-8 9a8 8 0 0 1 16 0M3 3h3'},
-    {path:'/reglamento',label:'Reglamento',icon:'M6 3h12v18l-6-3-6 3V3Zm3 5h6m-6 4h6'},
-    {path:'/aliados',label:'Aliados',icon:'M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m2 3a4 4 0 0 1 4 4v2'},
-    {path:'/catalogos',label:'Catálogos',icon:'M3 4h18v16H3zM3 9h18M9 9v11m6-11v11'},
-    {path:'/mi-cuenta',label:'Mi Cuenta',icon:'M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'},
-    {path:'/contactenos',label:'Contáctenos',icon:'M3 5h18v14H3zM3 6l9 7 9-7'}
-  ];
+  readonly darkMode = signal(this.savedDarkMode());
+  constructor() { this.applyTheme(); }
+  private savedDarkMode(): boolean {
+    try { return localStorage.getItem('lcm-theme') === 'dark'; }
+    catch { return false; }
+  }
+  private applyTheme() {
+    document.documentElement.dataset['theme'] = this.darkMode() ? 'dark' : 'light';
+  }
+  toggleTheme() {
+    this.darkMode.update(value => !value);
+    this.applyTheme();
+    try { localStorage.setItem('lcm-theme', this.darkMode() ? 'dark' : 'light'); }
+    catch { /* El tema funciona aunque el navegador bloquee el almacenamiento. */ }
+  }
+  navigation = [{path:'/',label:'Inicio',icon:'home'},{path:'/acerca-de',label:'Acerca de',icon:'about'},{path:'/reglamento',label:'Reglamento',icon:'rules'},{path:'/aliados',label:'Aliados',icon:'partners'},{path:'/catalogos',label:'Catálogos',icon:'catalog'},{path:'/mi-cuenta',label:'Mi Cuenta',icon:'account'},{path:'/contactenos',label:'Contáctenos',icon:'contact'}];
 }

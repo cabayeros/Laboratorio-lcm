@@ -144,11 +144,11 @@ export const routes: Routes = [
 export class AppComponent {
   navigation = [
     {path:'/',label:'Inicio',icon:'M3 10.5 12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6'},
-    {path:'/acerca-de',label:'Acerca de',icon:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-8 9a8 8 0 0 1 16 0M3 3h3'},
-    {path:'/reglamento',label:'Reglamento',icon:'M6 3h12v18l-6-3-6 3V3Zm3 5h6m-6 4h6'},
-    {path:'/aliados',label:'Aliados',icon:'M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m2 3a4 4 0 0 1 4 4v2'},
-    {path:'/catalogos',label:'Catálogos',icon:'M3 4h18v16H3zM3 9h18M9 9v11m6-11v11'},
+    {path:'/acerca-de',label:'Acerca de',icon:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-11v5m0-9h.01'},
+    {path:'/reglamento',label:'Reglamento',icon:'M6 3h9l4 4v14H6zM14 3v5h5M9 12h6m-6 4h6'},
+    {path:'/aliados',label:'Aliados',icon:'M3 10h18l-1.5-6h-15L3 10Zm2 0v10h14V10M9 20v-6h6v6M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0'},
+    {path:'/catalogos',label:'Catálogos',icon:'M4 5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 1-2-2V5Zm0 13a2 2 0 0 1 2-2h13M8 7h7m-7 4h7'},
     {path:'/mi-cuenta',label:'Mi Cuenta',icon:'M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'},
-    {path:'/contactenos',label:'Contáctenos',icon:'M3 5h18v14H3zM3 6l9 7 9-7'}
+    {path:'/contactenos',label:'Contáctenos',icon:'M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-4-.99L3 21l1.99-5.5A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 1 1 21 11.5Z'}
   ];
 }

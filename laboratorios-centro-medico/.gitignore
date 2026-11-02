@@ -8,5 +8,3 @@ out-tsc/
 cookies.txt
 hts-cache/
 *.log
-test-results/
-playwright-report/

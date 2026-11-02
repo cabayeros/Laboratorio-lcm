@@ -2,29 +2,24 @@
 
 Migración local del portal Cliente Consentido a Angular **22.2.3**, TypeScript **6.0.3** y Node **24.x** (mínimo **24.15.0**). Verificada con Node **24.22.1**. La aplicación nueva no ejecuta PHP, jQuery ni Bootstrap JavaScript.
 
-## Ejecutar
+## Ejecutar en desarrollo
 
-Ejecutar estos comandos desde `laboratorios-centro-medico/`, que es la raíz preparada para el repositorio GitHub.
+Desde esta carpeta, instala las dependencias y arranca el servidor de desarrollo Angular:
 
 ```powershell
-npm ci
-npm run build
+npm install
+npm start
+```
+
+Abrir **http://127.0.0.1:4200**. Para habilitar los formularios de cuenta y contacto, iniciar también la API Node en otra terminal:
+
+```powershell
 npm run serve
 ```
 
-Abrir **http://127.0.0.1:3000**. El servidor Node sirve exclusivamente `dist/lcm/browser` y la API; no expone la copia histórica, sus cookies ni los registros de HTTrack.
+Angular envía las solicitudes `/api` al servidor Node en el puerto 3000. Reiniciar Node si se modifica su código.
 
-Para desarrollar, iniciar `npm run serve` en una terminal y `npm start` en otra. Angular estará en **http://127.0.0.1:4200** y enviará `/api` al servidor Node de puerto 3000. Reiniciar Node si se modifica su código. `PORT` y `HOST` permiten configurar el servidor de producción.
-
-```powershell
-npm test
-npm run test:e2e
-npm run build -- --base-href /DEBITO/LEALTAD/HN_LCM/
-```
-
-El último comando compila para una subcarpeta. En ese caso configurar el servidor web o proxy para retirar `/DEBITO/LEALTAD/HN_LCM` antes de reenviar solicitudes a Node (incluyendo assets y API), y devolver la aplicación para rutas Angular. Para servir en la raíz basta `npm run build`.
-
-Las pruebas de navegador usan Microsoft Edge instalado y requieren una compilación previa. Playwright inicia el servidor si no está activo. Se validaron dos pruebas de API y dos recorridos de navegador en escritorio y móvil. Las capturas están en `test-results/preview-desktop.png` y `test-results/preview-mobile.png`.
+Para compilar y servir la versión de producción, ejecutar `npm run build` y después `npm run serve`. El servidor Node sirve exclusivamente `dist/lcm/browser` y la API; no expone la copia histórica, sus cookies ni los registros de HTTrack. Las variables `PORT` y `HOST` permiten configurar el servidor.
 
 ## Alcance
 
@@ -45,4 +40,4 @@ La casilla antigua «Recordar contraseña» se omitió porque no existe servicio
 
 El portal utiliza un diseño de ancho completo, navegación moderna, formularios en tarjetas, carrusel con controles separados y modos claro/oscuro. Los estilos se encuentran en src/styles.css y src/ui.css. Este proyecto funciona con Angular y Node, sin herramientas ni configuración de Live Server.
 
-La carpeta .github/workflows incluye compilación y pruebas Node para GitHub.
+La carpeta .github/workflows valida la compilación y las pruebas Node al publicar cambios.

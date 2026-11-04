@@ -56,7 +56,7 @@ export class HomeComponent implements OnDestroy {
 @Component({selector: 'lcm-about', template: `<section class="panel"><h1>Acerca de</h1><img class="information-image" src="assets/img/tarjetas.png" alt="Programa de beneficios Cliente Consentido de Laboratorios Centro Médico"></section>`})
 export class AboutComponent {}
 
-@Component({selector: 'lcm-rules', template: `<section class="panel"><h1>Reglamento</h1><div class="rules-body"><div><h2>REGLAMENTO PROGRAMA DE FIDELIDAD "CLIENTE CONSENTIDO"</h2><p>Disfruta de descuentos en Laboratorios Centro Médico y comercios afiliados al presentar tu tarjeta de beneficios ¨CLIENTE CONSENTIDO¨, además acumulas puntos por tus compras canjeables por Servicios de Laboratorio.</p><p>Para mayor información del Reglamento <a href="assets/reglamento.pdf" target="_blank" rel="noopener">Click Aquí <span class="sr-only">(PDF, abre en otra pestaña)</span></a></p></div></div></section>`})
+@Component({selector: 'lcm-rules', template: `<section class="panel"><h1>Reglamento</h1><div class="rules-body"><div><h2>REGLAMENTO PROGRAMA DE FIDELIDAD "CLIENTE CONSENTIDO"</h2><p>Disfruta de descuentos en Laboratorios Centro Médico y comercios afiliados al presentar tu tarjeta de beneficios «CLIENTE CONSENTIDO», además acumulas puntos por tus compras canjeables por servicios de laboratorio.</p><p>Para mayor información del Reglamento <a href="assets/reglamento.pdf" target="_blank" rel="noopener">Haz clic aquí <span class="sr-only">(PDF, abre en otra pestaña)</span></a></p></div></div></section>`})
 export class RulesComponent {}
 
 @Component({selector: 'lcm-partners', template: `<section class="panel"><h1>Aliados</h1><div class="panel-content"><h2>Información de aliados no disponible</h2><p>La sección del portal de origen presenta un error. El listado de comercios afiliados está pendiente de recuperación.</p><a href="https://www.facebook.com/LaboratoriosCentroMedico/" target="_blank" rel="noopener">Consultar con Laboratorios Centro Médico</a></div></section>`})
@@ -65,8 +65,8 @@ export class PartnersComponent {}
 @Component({
   selector: 'lcm-account', imports: [FormsModule],
   template: `<section class="panel"><h1>{{catalog ? 'Catálogos' : 'Mi Cuenta'}}</h1><div class="account-body"><form #form="ngForm" (ngSubmit)="submit(form)" class="signin">
-    <h2>Por favor Regístrate</h2>
-    <label for="username">Nombre de Usuario</label><input id="username" name="username" [(ngModel)]="username" required maxlength="48" autocomplete="username">
+    <h2>Por favor, regístrate</h2>
+    <label for="username">Nombre de usuario</label><input id="username" name="username" [(ngModel)]="username" required maxlength="48" autocomplete="username">
     <label for="password">Contraseña</label><input id="password" name="password" type="password" [(ngModel)]="password" required maxlength="48" autocomplete="current-password">
     @if (form.submitted && form.invalid) { <p class="form-message" role="alert">Completa tu nombre de usuario y contraseña.</p> }
     <button class="button" type="submit" [disabled]="busy()">{{busy() ? 'Cargando…' : 'Enviar'}}</button>
@@ -100,7 +100,7 @@ export class CatalogComponent {}
     <label for="firstName">*Nombres</label><input id="firstName" name="firstName" [(ngModel)]="data.firstName" required maxlength="25" autocomplete="given-name">
     <label for="lastName">*Apellidos</label><input id="lastName" name="lastName" [(ngModel)]="data.lastName" required maxlength="25" autocomplete="family-name">
     <label for="phone">Teléfono</label><input id="phone" name="phone" [(ngModel)]="data.phone" pattern="[0-9]{8}" maxlength="8" type="tel" autocomplete="tel" title="8 dígitos, por ejemplo 22224444">
-    <label for="email">*E-Mail</label><input id="email" name="email" [(ngModel)]="data.email" required email type="email" maxlength="50" autocomplete="email">
+    <label for="email">*Correo electrónico</label><input id="email" name="email" [(ngModel)]="data.email" required email type="email" maxlength="50" autocomplete="email">
     <label for="card">*No. Tarjeta Cliente Consentido</label><input id="card" name="card" [(ngModel)]="data.card" required maxlength="16">
     <label for="message">*Mensaje</label><textarea id="message" name="message" [(ngModel)]="data.message" required maxlength="150" rows="5"></textarea>
     @if (form.submitted && form.invalid) { <p class="form-message" role="alert">Revisa los campos obligatorios, el correo y el teléfono de 8 dígitos.</p> }

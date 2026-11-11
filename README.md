@@ -27,10 +27,18 @@ Para compilar y servir la versión de producción, ejecutar `npm run build` y de
 - Siete rutas Angular, menú adaptable, estado activo y navegación sin recargas.
 - Carrusel con las once posiciones originales (incluida la repetición de Fondo_8), indicadores, avance automático, controles y pausa.
 - Acerca de y Reglamento con las imágenes recuperadas del servidor; PDF local del reglamento.
+<<<<<<< Updated upstream
 - Formularios de cuenta, catálogo y contacto con validación y estados de carga/error.
 - API Node con validación y respuestas explícitas; sin almacenamiento de contraseñas.
 
 **No hay código fuente PHP ni base de datos en la entrega original:** es una copia HTTrack de las respuestas HTML. Por eso autenticación, perfiles, puntos, movimientos, canjes, catálogos privados y envío real de correo requieren implementar o conectar servicios de negocio. `POST /api/session` y `POST /api/contact` devuelven **503** después de validar, sin simular sesiones ni mensajes enviados. Los puntos de integración están en `server/index.mjs`; reemplazarlos por servicios reales antes de producción. No se realizan peticiones a PHP desde la aplicación nueva.
+=======
+- Inicio de sesión y catálogos con explicación de disponibilidad; la interfaz de la demo de cuenta se conserva en el código, pero no se puede activar desde el sitio.
+- Formulario de contacto con validación y estados de carga/error.
+- API Node con validación y respuestas explícitas; sin almacenamiento de contraseñas.
+
+**No hay código fuente PHP ni base de datos en la entrega original:** es una copia HTTrack de las respuestas HTML. Por eso autenticación, perfiles, puntos, movimientos, canjes, catálogos privados y envío real de correo requieren implementar o conectar servicios de negocio. Mi Cuenta muestra el formulario de inicio de sesión y lo prepara para `POST /api/session`; mientras no se integre el servicio, el servidor devuelve **503** sin crear una sesión ni almacenar credenciales. La interfaz de demostración local se conserva en el código, pero no hay una acción de la aplicación para acceder a ella. `POST /api/contact` también devuelve **503** después de validar. Los puntos de integración están en `server/index.mjs`; reemplazarlos por servicios reales antes de producción. No se realizan peticiones a PHP desde la aplicación nueva.
+>>>>>>> Stashed changes
 
 La sección Aliados devuelve **HTTP 500** en el sitio de origen. Se conserva su ruta con una explicación y un enlace de consulta; no se inventó un listado.
 
